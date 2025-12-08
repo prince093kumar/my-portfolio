@@ -5,7 +5,7 @@ const Navbar = ({ darkMode, toggleTheme, scrollTo, activeSection }) => (
   <nav className={`sticky top-0 z-50 border-b transition-colors duration-300 ${darkMode ? 'bg-slate-900/95 border-slate-800 text-slate-100' : 'bg-white/95 border-slate-200 text-slate-800'}`}>
     <div className="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
       <div className="font-mono font-bold text-xl flex items-center gap-2">
-        <span>My Portfolio</span>
+        <span className='hover:text-2xl'>My Portfolio</span>
       </div>
       <div className="flex items-center gap-6">
         {['About', 'Projects', 'Resume', 'Contact'].map((item) => (
