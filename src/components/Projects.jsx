@@ -1,5 +1,5 @@
 import React from "react";
-import { Code, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 const Projects = ({ darkMode }) => {
   const projects = [
@@ -34,8 +34,10 @@ const Projects = ({ darkMode }) => {
       }`}
     >
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold mb-12 flex items-center gap-2">
-          <Code className="text-blue-500" /> Featured Projects
+
+        {/* Heading without icon */}
+        <h2 className="text-3xl font-bold mb-12">
+          Featured Projects
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
