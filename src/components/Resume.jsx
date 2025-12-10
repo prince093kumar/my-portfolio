@@ -5,7 +5,7 @@ const Resume = ({ darkMode }) => (
   <section
     id="resume"
     className={`py-24 px-6 transition-colors duration-300 ${
-      darkMode ? "bg-slate-900 text-slate-100" : "bg-gradient-to-b from-blue-50 to-white text-slate-800"
+      darkMode ? "bg-slate-900 text-slate-100" : "bg-linear-to-b from-blue-50 to-white text-slate-800"
     }`}
   >
     <div className="max-w-4xl mx-auto">
