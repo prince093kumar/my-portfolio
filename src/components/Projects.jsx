@@ -8,21 +8,21 @@ const Projects = ({ darkMode }) => {
       desc: "A full-stack recipe recommendation system that generates recipes based on user-provided ingredients. Includes JWT authentication, bcrypt-secured login, and optimized API/state management achieving a 40% faster response time.",
       tags: ["MongoDB", "Express.js", "React", "Node", "REST API"],
       image: "/images/recipe.png",
-      link: "#"
+      link: "https://github.com/prince093kumar/summer_training_mern/tree/main/Recipe_Generator"
     },
     {
       title: "Smart Agriculture Platform",
       desc: "A platform enabling farmers to upload crop-disease images for expert diagnosis. Features dashboards for Farmers, Experts, and Admin, with analytics powered by Chart.js and automated PDF report generation—reducing diagnosis time from days to minutes.",
       tags: ["PHP", "MySQL", "Tailwind", "JavaScript", "HTML/CSS"],
       image: "/images/agri.png",
-      link: "#"
+      link: "https://github.com/prince093kumar/TechnoGrowX"
     },
     {
       title: "Government & Corporate Documentation Portal",
       desc: "A secure documentation portal supporting e-District services, MSME registration, and tax submissions. Built with role-based authentication, workflow automation, and optimized backend/database design for high reliability.",
       tags: ["PHP", "MySQL", "JavaScript", "HTML", "CSS"],
       image: "/images/govt.png",
-      link: "#"
+      link: "https://github.com/prince093kumar/ismart_indfes"
     }
   ];
 
@@ -52,14 +52,14 @@ const Projects = ({ darkMode }) => {
             >
               {/* Project Image */}
               <div
-                className={`h-44 flex items-center justify-center ${
+                className={`h-56 flex items-center justify-center ${
                   darkMode ? "bg-slate-700/40" : "bg-slate-100"
                 }`}
               >
                 <img
                   src={p.image}
                   alt={p.title}
-                  className="h-28 object-contain opacity-95"
+                  className="w-full h-full object-cover"
                 />
               </div>
 
