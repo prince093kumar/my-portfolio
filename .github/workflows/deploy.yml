@@ -3,11 +3,14 @@ name: Deploy Portfolio on Tag Release
 on:
   push:
     tags:
-      - 'v*'   # triggers on tags like v1.0.0, v2.1.3, etc.
+      - "v*"     # Runs when pushing tags like v1.0.0, v2.0.1, etc.
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write     # REQUIRED for GitHub Pages deployment
 
     steps:
       - name: Checkout repository
@@ -18,7 +21,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
