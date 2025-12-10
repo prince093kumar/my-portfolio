@@ -14,14 +14,14 @@ const Projects = ({ darkMode }) => {
       title: "Smart Agriculture Platform",
       desc: "A platform enabling farmers to upload crop-disease images for expert diagnosis. Features dashboards for Farmers, Experts, and Admin, with analytics powered by Chart.js and automated PDF report generation—reducing diagnosis time from days to minutes.",
       tags: ["PHP", "MySQL", "Tailwind", "JavaScript", "HTML/CSS"],
-      image: "/images/agri.jpg",
+      image: "/images/agri.png",
       link: "https://github.com/prince093kumar/TechnoGrowX",
     },
     {
       title: "Government & Corporate Documentation Portal",
       desc: "A secure documentation portal supporting e-District services, MSME registration, and tax submissions. Built with role-based authentication, workflow automation, and optimized backend/database design for high reliability.",
       tags: ["PHP", "MySQL", "JavaScript", "HTML", "CSS"],
-      image: "/images/govt.jpg",
+      image: "/images/govt.png",
       link: "https://github.com/prince093kumar/ismart_indfes",
     },
   ];
