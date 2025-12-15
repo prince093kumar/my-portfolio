@@ -1,75 +1,74 @@
-import React from "react";
-import { Sun, Moon } from "lucide-react";
+import React, { useState } from "react";
+import { Home, User, FileText, Code, Mail } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const Navbar = ({ darkMode, toggleTheme, scrollTo, activeSection }) => {
-  const menu = ["About", "Projects", "Resume", "Contact"];
+const Navbar = ({ darkMode, scrollTo, activeSection }) => {
+  const [hoveredTab, setHoveredTab] = useState(null);
+
+  const navItems = [
+    { id: 'home', label: 'Home', icon: Home },
+    { id: 'about', label: 'About', icon: User },
+    { id: 'projects', label: 'Projects', icon: Code },
+    { id: 'resume', label: 'Resume', icon: FileText },
+    { id: 'contact', label: 'Contact', icon: Mail }
+  ];
 
   return (
-    <nav
-      className={`sticky top-0 z-50 border-b backdrop-blur-md transition-colors duration-300 ${
-        darkMode
-          ? "bg-slate-900/80 border-slate-800 text-slate-100"
-          : "bg-white/80 border-slate-200 text-slate-800"
-      }`}
+    <motion.nav
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
+      className={`fixed top-4 left-1/2 -translate-x-1/2 w-[95%] md:w-[90%] max-w-4xl z-50 rounded-2xl glass transition-all duration-300 border-slate-700/50 text-slate-100 bg-slate-900/80 shadow-lg backdrop-blur-md`}
     >
-      
-      <div className="w-full px-6 md:px-8 h-16 flex items-center justify-between">
-        {/* LEFT - Brand */}
-        <div
-          className="font-mono font-bold text-xl tracking-wide cursor-pointer select-none"
-          onClick={() => scrollTo?.("home")}
+      <div className="w-full px-4 md:px-8 h-16 flex items-center justify-between">
+        {/* Brand */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="font-mono font-bold text-lg md:text-xl tracking-wide cursor-pointer select-none"
+          onClick={() => scrollTo && scrollTo("home")}
         >
           Prince Kumar
-        </div>
+        </motion.div>
 
-        {/* RIGHT - Menu */}
-        <div className="flex items-center gap-2">
-          {menu.map((item) => {
-            const id = item.toLowerCase();
-            const isActive = activeSection === id;
+        {/* Navigation Links */}
+        <div className="flex items-center gap-1 md:gap-2">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id;
+            const Icon = item.icon;
+
+            // Logic: Pill is on Hovered item, OR on Active item if nothing is hovered
+            const isHighlighted = hoveredTab ? hoveredTab === item.id : isActive;
 
             return (
-              <button
-                key={item}
-                onClick={() => scrollTo?.(id)}
-                className={`group relative px-2 py-1 rounded-md transition-transform duration-200
-                  transform
-                  ${
-                    isActive
-                      ? "text-blue-600 font-semibold -translate-y-0.5"
-                      : "text-current hover:text-blue-600 hover:-translate-y-0.5"
-                  }
-                `}
-                aria-current={isActive ? "page" : undefined}
+              <motion.button
+                key={item.id}
+                onClick={() => scrollTo && scrollTo(item.id)}
+                onHoverStart={() => setHoveredTab(item.id)}
+                onHoverEnd={() => setHoveredTab(null)}
+                whileTap={{ scale: 0.95 }}
+                className="relative px-3 py-2 rounded-xl flex items-center gap-2 transition-colors duration-200"
               >
-                <span className="relative z-10">{item}</span>
+                {/* Visual Sliding Pill */}
+                {isHighlighted && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 bg-blue-500/10 rounded-xl border border-blue-500/20 -z-10"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
 
-                {/* animated underline */}
-                <span
-                  className={`absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] rounded-full transition-all duration-300
-                    ${
-                      isActive
-                        ? "w-[70%] bg-blue-600"
-                        : "w-0 bg-blue-500 group-hover:w-[70%]"
-                    }`}
-                />
-              </button>
+                <div className={`relative z-10 flex items-center gap-2 transition-colors duration-200 ${isActive ? "text-blue-400" : "text-slate-400 hover:text-slate-200"
+                  }`}>
+                  <Icon size={18} />
+                  <span className="text-sm font-medium hidden md:block">{item.label}</span>
+                </div>
+              </motion.button>
             );
           })}
-
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className={`ml-2 p-2 rounded-full transition-transform duration-200 transform hover:scale-110 ${
-              darkMode ? "bg-slate-800 hover:bg-slate-700" : "bg-slate-100 hover:bg-slate-200"
-            }`}
-            aria-label="Toggle theme"
-          >
-            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
