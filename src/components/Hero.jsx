@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, ArrowRight } from "lucide-react";
-import profileImg from '../assets/profile_img.jpg';
+import { ArrowRight } from "lucide-react";
+import CodeCard from './CodeCard';
+import profilePic from '../assets/profile_img.png';
 
 const Hero = ({ darkMode, scrollTo }) => {
   const [text, setText] = useState('');
@@ -11,7 +12,7 @@ const Hero = ({ darkMode, scrollTo }) => {
   const roles = [
     "Full Stack Developer",
     "DevOps Enthusiast",
-    "Php Developer",
+    "PHP Developer",
     "Problem Solver"
   ];
 
@@ -38,92 +39,106 @@ const Hero = ({ darkMode, scrollTo }) => {
   return (
     <section
       id="home"
-      className={`relative py-32 px-4 text-center overflow-hidden flex flex-col items-center justify-center min-h-screen transition-colors duration-300 ${darkMode
+      className={`relative pt-32 pb-20 px-4 md:px-8 overflow-hidden flex items-center min-h-screen transition-colors duration-300 ${darkMode
         ? "bg-slate-900 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
-        : "bg-slate-50"
+        : "bg-slate-50 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:20px_20px]"
         }`}
     >
       {/* Background Effects */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
         {/* Gradients */}
-        <div className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[100px] opacity-20 animate-pulse ${darkMode ? "bg-blue-600" : "bg-blue-400"
-          }`} />
-        <div className={`absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[100px] opacity-20 animate-pulse delay-1000 ${darkMode ? "bg-purple-600" : "bg-purple-400"
-          }`} />
+        <div className={`absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full blur-[120px] opacity-30 animate-pulse ${darkMode ? "bg-blue-600" : "bg-blue-300"}`} />
+        <div className={`absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] opacity-30 animate-pulse delay-1000 ${darkMode ? "bg-purple-600" : "bg-purple-300"}`} />
       </div>
 
-      <div className="relative max-w-4xl mx-auto space-y-8 z-10 perspective-1000">
+      <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 items-center z-10 w-full">
 
-        {/* Profile Picture */}
+        {/* Text Content - Responsive Left Aligned */}
         <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, type: 'spring' }}
-          className="relative inline-block mb-8 group"
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="text-center lg:text-left space-y-8 order-2 lg:order-1 mt-8 lg:mt-0"
         >
-          {/* Standard Glow Ring */}
-          <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 blur opacity-30 group-hover:opacity-100 transition duration-500 animate-spin-slow" />
-          <img
-            src={profileImg}
-            alt="Prince Kumar"
-            className={`relative w-48 h-48 md:w-64 md:h-64 rounded-full object-cover border-4 shadow-2xl transition-transform duration-500 group-hover:scale-105 ${darkMode ? "border-slate-800" : "border-white"
-              }`}
-          />
-        </motion.div>
+          <div className="space-y-4">
+            <h2 className={`text-xl md:text-2xl font-medium tracking-wide text-[#3B82F6]`}>
+              Welcome to my portfolio
+            </h2>
+            <div className="flex flex-col lg:flex-row items-center lg:items-end gap-6 lg:gap-8">
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="relative shrink-0"
+              >
+                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 blur opacity-50"></div>
+                <img
+                  src={profilePic}
+                  alt="Prince Kumar"
+                  className={`relative w-24 h-24 md:w-32 md:h-32 object-cover rounded-full border-4 shadow-xl ${darkMode ? 'border-slate-800' : 'border-white'}`}
+                />
+              </motion.div>
+              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
+                Hi, I'm{" "}
+                <br className="hidden lg:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 animate-gradient-x">
+                  Prince Kumar
+                </span>
+              </h1>
+            </div>
+          </div>
 
-        {/* Text Content - Aligned with Resume Theme */}
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-            Hi, I'm{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 animate-gradient-x">
-              Prince Kumar
-            </span>
-          </h1>
-
-          <div className="h-10 md:h-12 flex items-center justify-center overflow-hidden">
-            <span className={`text-xl md:text-4xl font-bold ${darkMode ? "text-purple-400" : "text-purple-600"}`}>
+          <div className="h-10 md:h-12 flex items-center justify-center lg:justify-start overflow-hidden">
+            <span className={`text-2xl md:text-4xl font-bold ${darkMode ? "text-slate-300" : "text-slate-700"}`}>
               {text}
               <span className="animate-pulse text-purple-500">|</span>
             </span>
           </div>
 
-          <p className={`mt-8 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed ${darkMode ? "text-slate-400" : "text-slate-600"
-            }`}>
-            Building scalable, high-performance web applications with precision.
+          <p className={`text-lg md:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed text-[#94A3B8]`}>
+            I engineer scalable, high-performance web applications with precision, turning complex problems into elegant code.
           </p>
+
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+            <button
+              onClick={() => scrollTo && scrollTo("projects")}
+              className="w-full sm:w-auto group relative px-8 py-4 rounded-full font-bold text-base text-white bg-[#3B82F6] overflow-hidden shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.6)] transition-all hover:-translate-y-1"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                View Work <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
+
+            <button
+              onClick={() => scrollTo && scrollTo("contact")}
+              className={`w-full sm:w-auto px-8 py-4 rounded-full font-bold text-base border transition-all hover:-translate-y-1 hover:shadow-lg bg-transparent border-[#3B82F6] text-[#3B82F6] hover:bg-[#3B82F6]/10`}
+            >
+              Contact Me
+            </button>
+          </div>
         </motion.div>
 
-        {/* Buttons */}
+        {/* Right Column: Code Card Profile */}
         <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row justify-center gap-6 pt-6"
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative w-full max-w-[500px] mx-auto order-1 lg:order-2 perspective-1000 z-20 group"
         >
-          <button
-            onClick={() => scrollTo && scrollTo("projects")}
-            className="group relative px-8 py-3 rounded-full font-bold text-base text-white bg-blue-600 overflow-hidden shadow-lg hover:shadow-blue-500/40 transition-all hover:-translate-y-1"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              View Work <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </button>
+          {/* Decorative Elements around card */}
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl animate-pulse" />
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl animate-pulse delay-700" />
 
-          <button
-            onClick={() => scrollTo && scrollTo("contact")}
-            className={`px-8 py-3 rounded-full font-bold text-base border-2 transition-all hover:-translate-y-1 hover:shadow-lg ${darkMode
-              ? "border-slate-700 bg-slate-800/50 hover:bg-slate-800 text-white"
-              : "border-slate-200 bg-white/50 hover:bg-white text-slate-800"
-              }`}
-          >
-            Contact Me
-          </button>
+          {/* Aesthetic Glow Behind CodeCard */}
+          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 blur-lg opacity-40 group-hover:opacity-75 transition duration-500" />
+
+          {/* Tilting container effect */}
+          <div className="relative z-10 transform transition-transform duration-500 md:group-hover:-translate-y-2 md:group-hover:rotate-1">
+            <CodeCard />
+          </div>
         </motion.div>
+
       </div>
     </section>
   );

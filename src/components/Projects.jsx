@@ -35,10 +35,24 @@ const Projects = ({ darkMode }) => {
   return (
     <section
       id="projects"
-      className={`py-20 px-4 transition-colors duration-300 ${darkMode ? "bg-slate-950 text-slate-100" : "bg-white text-slate-900"
+      className={`relative py-20 px-4 transition-colors duration-300 overflow-hidden ${darkMode ? "bg-slate-900 text-slate-100" : "bg-slate-50 text-slate-900"
         }`}
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Interactive Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div
+          animate={{ x: [0, -50, 0], y: [0, 50, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          className={`absolute top-40 right-20 w-72 h-72 rounded-full blur-[120px] opacity-20 ${darkMode ? "bg-blue-600" : "bg-blue-400"}`}
+        />
+        <motion.div
+          animate={{ x: [0, 50, 0], y: [0, -50, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className={`absolute bottom-40 left-20 w-72 h-72 rounded-full blur-[120px] opacity-20 ${darkMode ? "bg-purple-600" : "bg-purple-400"}`}
+        />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,9 +70,10 @@ const Projects = ({ darkMode }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className={`group rounded-2xl overflow-hidden border transition-all hover:shadow-2xl hover:-translate-y-1 ${darkMode
-                  ? "bg-slate-900 border-slate-800 hover:border-slate-600"
-                  : "bg-slate-50 border-slate-200 hover:border-blue-400/50 hover:bg-white"
+              whileHover={{ scale: 1.02 }}
+              className={`glass-card group rounded-3xl overflow-hidden relative transition-all duration-500 hover:-translate-y-2 cursor-pointer ${darkMode
+                ? "bg-slate-900/50"
+                : "bg-white/60"
                 }`}
             >
               {/* Image Container */}
@@ -82,13 +97,13 @@ const Projects = ({ darkMode }) => {
                 </p>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 relative z-10">
                   {p.tags.map((tag) => (
                     <span
                       key={tag}
-                      className={`text-xs px-2 py-1 rounded-full font-medium ${darkMode
-                          ? "bg-slate-800 text-slate-300 border border-slate-700"
-                          : "bg-white text-slate-700 border border-slate-200 shadow-sm"
+                      className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${darkMode
+                        ? "bg-blue-500/10 text-blue-400 border border-blue-500/20 group-hover:bg-blue-500/20"
+                        : "bg-blue-50 text-blue-600 border border-blue-100 group-hover:bg-blue-100"
                         }`}
                     >
                       {tag}

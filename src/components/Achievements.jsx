@@ -4,9 +4,31 @@ import { motion } from "framer-motion";
 
 const Achievements = ({ darkMode }) => {
     const achievements = [
-        "Received Academic Achiever Award twice during Diploma for outstanding academic performance.",
-        "Achieved 5-Star Gold Badge in Java | HackerRank.",
-        "4-Star Badge in JavaScript | HackerRank."
+        {
+            title: "University Gold Medal",
+            desc: "Received for consistent academic excellence and highest cumulative performance in the Diploma program.",
+            icon: "🏅"
+        },
+        {
+            title: "100+ LeetCode Problems",
+            desc: "Completed problems covering arrays, strings, recursion, dynamic programming, and graph algorithms.",
+            icon: "🧠"
+        },
+        {
+            title: "Academic Achiever Award",
+            desc: "Received Academic Achiever Award twice during Diploma for outstanding academic performance.",
+            icon: "🏆"
+        },
+        {
+            title: "HackerRank 5-Star Gold Badge",
+            desc: "Achieved 5-Star Gold Badge in Java programming on HackerRank.",
+            icon: "⭐"
+        },
+        {
+            title: "HackerRank 4-Star Badge",
+            desc: "Achieved 4-Star Badge in JavaScript programming on HackerRank.",
+            icon: "🌟"
+        }
     ];
 
     return (
@@ -21,24 +43,24 @@ const Achievements = ({ darkMode }) => {
                     <h2 className="text-3xl font-extrabold tracking-tight">Achievements</h2>
                 </div>
 
-                <div className="grid gap-4">
+                <div className="grid md:grid-cols-2 gap-6">
                     {achievements.map((ach, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className={`p-5 rounded-2xl border flex items-center gap-4 group hover:bg-slate-800/80 transition-colors ${darkMode
-                                    ? "bg-slate-800/40 border-slate-700"
-                                    : "bg-white border-slate-200"
+                            whileHover={{ scale: 1.02 }}
+                            className={`p-6 rounded-2xl glass-card border flex gap-4 items-start hover:shadow-xl hover:border-yellow-500/30 transition-all cursor-pointer ${darkMode ? "border-slate-700/50 bg-slate-800/40" : "border-slate-200 bg-white/60"
                                 }`}
                         >
-                            <div className={`p-3 rounded-full ${darkMode ? "bg-slate-700 text-yellow-500" : "bg-yellow-100 text-yellow-600"}`}>
-                                <Star size={24} fill="currentColor" className="group-hover:animate-spin" />
+                            <div className="text-4xl shrink-0 p-3 bg-white/10 rounded-xl dark:bg-slate-800">
+                                {ach.icon}
                             </div>
-                            <p className={`text-lg font-medium ${darkMode ? "text-slate-200" : "text-slate-700"}`}>
-                                {ach}
-                            </p>
+                            <div>
+                                <h3 className="font-bold text-xl leading-snug mb-2">{ach.title}</h3>
+                                <p className={`text-sm leading-relaxed ${darkMode ? "text-slate-400" : "text-slate-500"}`}>{ach.desc}</p>
+                            </div>
                         </motion.div>
                     ))}
                 </div>

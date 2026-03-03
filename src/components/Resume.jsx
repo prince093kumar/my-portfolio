@@ -123,7 +123,7 @@ const Resume = ({ darkMode }) => {
         {/* Download Button */}
         <div className="text-center pt-8">
           <a
-            href="/resume.pdf"
+            href={`${import.meta.env.BASE_URL}resume.pdf`}
             download="Prince_Kumar_Resume.pdf"
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-bold text-lg shadow-lg hover:shadow-blue-500/40 hover:scale-105 transition-all"
           >

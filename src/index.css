@@ -8,11 +8,25 @@
 :root {
   font-family: 'Outfit', sans-serif;
   scroll-behavior: smooth;
+
+  /* Unified "Neon Slate" Color Palette */
+  --color-bg-slate: #0B1121;
+  --color-card-bg: rgba(30, 41, 59, 0.7);
+  --color-primary: #3B82F6;
+  --color-secondary: #8B5CF6;
+  --color-text-heading: #F8FAFC;
+  --color-text-body: #94A3B8;
 }
 
 body {
   @apply antialiased overflow-x-hidden transition-colors duration-300;
-  @apply bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100;
+  @apply bg-slate-50 text-slate-900;
+  /* Dark mode overrides using Neon Slate */
+}
+
+:is(.dark) body {
+  background-color: var(--color-bg-slate);
+  color: var(--color-text-body);
 }
 
 /* Cyberpunk Grid Background */
@@ -43,13 +57,28 @@ body {
 }
 
 .glass-card {
-  @apply backdrop-blur-xl bg-white/10 dark:bg-slate-800/40 border border-white/20 dark:border-blue-500/20 shadow-2xl transition-all duration-300;
+  @apply backdrop-blur-md bg-white/10 border border-white/20 shadow-2xl transition-all duration-300;
+  /* Dark mode specific glassmorphism styling using new Neon Slate colors */
+  background-color: rgba(30, 41, 59, 0.5);
+  border-color: rgba(255, 255, 255, 0.05);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .glass-card:hover {
-  @apply dark:border-blue-400/50 dark:bg-slate-800/60;
+  background-color: rgba(30, 41, 59, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+/* Specific styling for the Hero Code Card */
+.code-editor-card {
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.85) 0%, rgba(30, 58, 138, 0.75) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 0 50px -15px rgba(139, 92, 246, 0.5);
+  transition: all 0.3s ease;
 }
 
 /* Animations */
