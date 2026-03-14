@@ -1,0 +1,108 @@
+﻿
+> my-portfolio@0.0.0 lint
+> eslint .
+
+
+D:\B.Tech-5 semester\Devops\portfolio\my-portfolio\src\components\Contact.jsx
+  64:33  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  62 |
+  63 | const Particle = ({ delay }) => {
+> 64 |   const randomX = useMemo(() => Math.random() * 60 - 30, []);
+     |                                 ^^^^^^^^^^^^^ Cannot call impure function
+  65 |   const randomY = useMemo(() => [-20, -120], []);
+  66 |   const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+  67 |   const randomTop = useMemo(() => `${Math.random() * 100}%`, []);                                         react-hooks/purity
+  66:39  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  64 |   const randomX = useMemo(() => Math.random() * 60 - 30, []);
+  65 |   const randomY = useMemo(() => [-20, -120], []);
+> 66 |   const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+     |                                       ^^^^^^^^^^^^^ Cannot call impure function
+  67 |   const randomTop = useMemo(() => `${Math.random() * 100}%`, []);
+  68 |   const randomDuration = useMemo(() => Math.random() * 6 + 6, []);
+  69 |  react-hooks/purity
+  67:38  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  65 |   const randomY = useMemo(() => [-20, -120], []);
+  66 |   const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+> 67 |   const randomTop = useMemo(() => `${Math.random() * 100}%`, []);
+     |                                      ^^^^^^^^^^^^^ Cannot call impure function
+  68 |   const randomDuration = useMemo(() => Math.random() * 6 + 6, []);
+  69 |
+  70 |   return (                                                      react-hooks/purity
+  68:40  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  66 |   const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+  67 |   const randomTop = useMemo(() => `${Math.random() * 100}%`, []);
+> 68 |   const randomDuration = useMemo(() => Math.random() * 6 + 6, []);
+     |                                        ^^^^^^^^^^^^^ Cannot call impure function
+  69 |
+  70 |   return (
+  71 |     <motion.div                                                                                      react-hooks/purity
+
+D:\B.Tech-5 semester\Devops\portfolio\my-portfolio\src\components\Projects.jsx
+  12:10  error  'hoveredIndex' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]|motion/u  no-unused-vars
+
+D:\B.Tech-5 semester\Devops\portfolio\my-portfolio\src\components\TechOrbit.jsx
+  150:23  error  'setShowCommand' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]|motion/u  no-unused-vars
+
+D:\B.Tech-5 semester\Devops\portfolio\my-portfolio\src\components\TechnicalSkills.jsx
+  1:38  error  'useRef' is defined but never used. Allowed unused vars must match /^[A-Z_]|motion/u  no-unused-vars
+
+D:\B.Tech-5 semester\Devops\portfolio\my-portfolio\src\components\Workflow.jsx
+  146:33  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  144 |
+  145 | const Particle = ({ index }) => {
+> 146 |   const randomX = useMemo(() => Math.random() * 40 - 20, []);
+      |                                 ^^^^^^^^^^^^^ Cannot call impure function
+  147 |   const randomDuration = useMemo(() => Math.random() * 5 + 5, []);
+  148 |   const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+  149 |   const randomTop = useMemo(() => `${Math.random() * 100}%`, []);         react-hooks/purity
+  147:40  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  145 | const Particle = ({ index }) => {
+  146 |   const randomX = useMemo(() => Math.random() * 40 - 20, []);
+> 147 |   const randomDuration = useMemo(() => Math.random() * 5 + 5, []);
+      |                                        ^^^^^^^^^^^^^ Cannot call impure function
+  148 |   const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+  149 |   const randomTop = useMemo(() => `${Math.random() * 100}%`, []);
+  150 |  react-hooks/purity
+  148:39  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  146 |   const randomX = useMemo(() => Math.random() * 40 - 20, []);
+  147 |   const randomDuration = useMemo(() => Math.random() * 5 + 5, []);
+> 148 |   const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+      |                                       ^^^^^^^^^^^^^ Cannot call impure function
+  149 |   const randomTop = useMemo(() => `${Math.random() * 100}%`, []);
+  150 |
+  151 |   return (                          react-hooks/purity
+  149:38  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  147 |   const randomDuration = useMemo(() => Math.random() * 5 + 5, []);
+  148 |   const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+> 149 |   const randomTop = useMemo(() => `${Math.random() * 100}%`, []);
+      |                                      ^^^^^^^^^^^^^ Cannot call impure function
+  150 |
+  151 |   return (
+  152 |     <motion.div                                                                         react-hooks/purity
+
+Γ£û 11 problems (11 errors, 0 warnings)
+

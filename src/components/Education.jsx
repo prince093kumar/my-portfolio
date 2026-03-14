@@ -1,73 +1,101 @@
 import React from "react";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
-const Education = ({ darkMode }) => {
+const Education = () => {
     const education = [
         {
-            degree: "B.Tech - Computer Science and Engineering",
-            school: "Lovely Professional University, Punjab",
-            year: "Aug '24 - Aug '27",
+            degree: "Bachelor of Technology, Computer Science and Engineering",
+            school: "Lovely Professional University",
+            location: "Phagwara, Punjab",
+            info: "CGPA: 8.55",
+            year: "Aug 2024 – Present",
         },
         {
-            degree: "Diploma - Computer Science and Engineering",
-            school: "Lovely Professional University, Punjab",
-            year: "Aug '22 - Jul '24",
+            degree: "Diploma, Computer Science and Engineering",
+            school: "Lovely Professional University",
+            location: "Phagwara, Punjab",
+            info: "CGPA: 9.6",
+            year: "Jul 2022 – Jun 2024",
         },
         {
             degree: "Intermediate",
-            school: "MKD Public School, Bihar",
-            year: "Jun '19 - Jul '21",
+            school: "MKD Public School",
+            location: "Motihari, Bihar",
+            info: "Percentage: 71.04%",
+            year: "Jun 2019 – Jul 2021",
         }
     ];
 
     return (
-        <section
-            id="education"
-            className={`relative py-20 px-4 transition-colors duration-300 overflow-hidden ${darkMode ? "bg-slate-800/50 text-slate-100" : "bg-slate-50 text-slate-800"
-                }`}
-        >
-            {/* Interactive Background Elements */}
-            <div className="absolute inset-0 pointer-events-none">
-                <motion.div
-                    animate={{ x: [0, 30, 0], y: [0, -30, 0] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                    className={`absolute top-10 left-10 w-48 h-48 rounded-full blur-[80px] opacity-20 ${darkMode ? "bg-indigo-600" : "bg-indigo-300"}`}
-                />
-            </div>
+    <section id="education" className="section relative">
+      <div className="container mx-auto px-6">
+        <div className="max-w-3xl mb-20 space-y-4">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-primary font-bold tracking-[0.3em] uppercase text-sm"
+          >
+            Academic Foundation
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-6xl font-extrabold tracking-tight text-white"
+          >
+            Education <span className="text-gradient">Timeline</span>
+          </motion.h2>
+        </div>
 
-            <div className="relative max-w-4xl mx-auto z-10">
-                <div className="flex items-center gap-3 mb-12">
-                    <GraduationCap className="text-blue-500" size={32} />
-                    <h2 className="text-3xl font-extrabold tracking-tight">Education</h2>
-                </div>
+        <div className="relative max-w-5xl">
+          {/* Vertical Line */}
+          <div className="absolute left-8 top-0 bottom-0 w-[1px] bg-white/5" />
 
-                <div className="grid gap-6">
-                    {education.map((edu, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            whileHover={{ scale: 1.02 }}
-                            className={`p-6 rounded-2xl glass-card border hover:shadow-xl hover:border-indigo-500/30 transition-all cursor-pointer ${darkMode ? "border-slate-700/50 bg-slate-900/40" : "border-slate-200 bg-white/60"
-                                }`}
-                        >
-                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                                <div>
-                                    <h3 className="text-xl font-bold">{edu.degree}</h3>
-                                    <p className="text-blue-500 font-medium">{edu.school}</p>
-                                </div>
-                                <span className={`px-3 py-1 text-sm font-medium rounded-lg ${darkMode ? "bg-slate-700 text-slate-300" : "bg-slate-200 text-slate-700"
-                                    }`}>
-                                    {edu.year}
-                                </span>
-                            </div>
-                        </motion.div>
-                    ))}
+          <div className="space-y-12">
+            {education.map((edu, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="relative pl-20 group"
+              >
+                {/* Node */}
+                <div className="absolute left-[29px] top-0 w-3 h-3 rounded-full bg-primary border-4 border-background group-hover:scale-150 transition-transform z-10" />
+                
+                <div className="glass-card p-8 rounded-[2rem] border-white/5 group-hover:border-primary/30 transition-all">
+                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                      <div className="space-y-1">
+                         <h3 className="text-2xl font-bold text-white group-hover:text-primary transition-colors">
+                            {edu.degree}
+                         </h3>
+                         <div className="flex items-center gap-2 text-primary font-semibold">
+                            <GraduationCap size={18} />
+                            <span>{edu.school}</span>
+                         </div>
+                      </div>
+                      <div className="flex flex-col md:items-end gap-2 text-muted-foreground text-sm font-medium">
+                         <div className="flex items-center gap-2">
+                            <Calendar size={16} />
+                            <span>{edu.year}</span>
+                         </div>
+                         <div className="flex items-center gap-2">
+                            <MapPin size={16} />
+                            <span>{edu.location}</span>
+                         </div>
+                      </div>
+                   </div>
+
+                   <div className="inline-block px-4 py-2 rounded-xl bg-primary/10 border border-primary/20 text-primary font-bold">
+                      {edu.info}
+                   </div>
                 </div>
-            </div>
-        </section>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
     );
 };
 

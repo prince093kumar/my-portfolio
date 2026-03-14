@@ -3,6 +3,10 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  base: "/",   // your GitHub repo name EXACTLY
   plugins: [react(), tailwindcss()],
+  server: {
+    hmr: {
+      overlay: true
+    }
+  }
 });

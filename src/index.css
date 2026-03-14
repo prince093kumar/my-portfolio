@@ -1,174 +1,192 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Outfit', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-heading: 'Poppins', sans-serif;
+
+  /* Clean Future Tech Theme */
+  --color-background: #020617;
+  --color-surface: #0f172a;
+  --color-foreground: #e2e8f0;
+  
+  --color-primary: #38bdf8;
+  --color-secondary: #6366f1;
+  --color-success: #22c55e;
+  
+  --color-muted: #1e293b;
+  --color-border: #1e293b;
+  
+  --radius: 12px;
+
+  --cursor-size: 8px;
+  --cursor-trail: 40px;
 }
 
-:root {
-  font-family: 'Outfit', sans-serif;
-  scroll-behavior: smooth;
-
-  /* Unified "Neon Slate" Color Palette */
-  --color-bg-slate: #0B1121;
-  --color-card-bg: rgba(30, 41, 59, 0.7);
-  --color-primary: #3B82F6;
-  --color-secondary: #8B5CF6;
-  --color-text-heading: #F8FAFC;
-  --color-text-body: #94A3B8;
-}
-
-body {
-  @apply antialiased overflow-x-hidden transition-colors duration-300;
-  @apply bg-slate-50 text-slate-900;
-  /* Dark mode overrides using Neon Slate */
-}
-
-:is(.dark) body {
-  background-color: var(--color-bg-slate);
-  color: var(--color-text-body);
-}
-
-/* Cyberpunk Grid Background */
-:is(.dark) body::before {
-  background-image:
-    linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)),
-    linear-gradient(to right, rgba(99, 102, 241, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
-  background-size: 100% 100%, 40px 40px, 40px 40px;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-blue-500/50 rounded-full hover:bg-purple-500/80 transition-colors;
-}
-
-/* Glassmorphism Utilities */
-.glass {
-  @apply backdrop-blur-xl bg-white/10 dark:bg-slate-900/40 border-b border-white/10 dark:border-blue-500/10 shadow-lg;
-}
-
-.glass-card {
-  @apply backdrop-blur-md bg-white/10 border border-white/20 shadow-2xl transition-all duration-300;
-  /* Dark mode specific glassmorphism styling using new Neon Slate colors */
-  background-color: rgba(30, 41, 59, 0.5);
-  border-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-.glass-card:hover {
-  background-color: rgba(30, 41, 59, 0.8);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
-}
-
-/* Specific styling for the Hero Code Card */
-.code-editor-card {
-  background: linear-gradient(135deg, rgba(30, 30, 30, 0.85) 0%, rgba(30, 58, 138, 0.75) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  box-shadow: 0 0 50px -15px rgba(139, 92, 246, 0.5);
-  transition: all 0.3s ease;
-}
-
-/* Animations */
-@keyframes float {
-  0% {
-    transform: translateY(0px);
+@layer base {
+  html {
+    scroll-behavior: smooth;
   }
 
-  50% {
-    transform: translateY(-10px);
-  }
-
-  100% {
-    transform: translateY(0px);
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
   }
 }
 
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
+@layer utilities {
+  .bg-grid {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 32px 32px;
+    animation: grid-pan 20s linear infinite;
   }
 
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes spin-reverse-slow {
-  from {
-    transform: rotate(360deg);
-  }
-
-  to {
-    transform: rotate(0deg);
+  @keyframes grid-pan {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-32px, -32px); }
   }
 }
 
-@keyframes gradient-x {
-
-  0%,
-  100% {
-    background-position: 0% 50%;
+@layer components {
+  /* Minimalist Card */
+  .tech-card {
+    background: #111827;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  50% {
-    background-position: 100% 50%;
+  .tech-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.15);
+  }
+
+  .glass-card {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.15);
+  }
+
+  .glow-primary {
+    filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.3));
+  }
+
+  .text-gradient {
+    /* Subtle Cyan to Indigo Gradient for text */
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Section Divider Glow Line */
+  .section-divider {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.5), transparent);
+    margin: 2rem 0;
+  }
+
+  /* Terminal Styles */
+  .terminal-cursor {
+    display: inline-block;
+    width: 12px;
+    height: 20px;
+    background-color: var(--color-primary);
+    margin-left: 6px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  .terminal-window {
+    background: rgba(13, 17, 23, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.1);
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes sweep {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+  }
+
+  .animate-sweep {
+    background-size: 200% auto;
+    animation: sweep 4s linear infinite;
   }
 }
 
-@keyframes shooting-star {
-  0% {
-    transform: translateX(0) translateY(0) rotate(45deg);
-    opacity: 1;
+@layer utilities {
+  .bg-mesh {
+    background-color: var(--color-background);
   }
 
-  70% {
-    opacity: 1;
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 
-  100% {
-    transform: translateX(300px) translateY(300px) rotate(45deg);
-    opacity: 0;
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .mask-radial {
+    mask-image: radial-gradient(circle, black, transparent 80%);
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+.section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
-.animate-float-delayed {
-  animation: float 6s ease-in-out 3s infinite;
-}
-
-.animate-spin-slow {
-  animation: spin-slow 10s linear infinite;
-}
-
-.animate-spin-reverse-slow {
-  animation: spin-reverse-slow 15s linear infinite;
-}
-
-.animate-gradient-x {
-  background-size: 200% 200%;
-  animation: gradient-x 5s ease infinite;
-}
-
-.animate-shooting-star {
-  animation: shooting-star 4s linear infinite;
-}
-
-.gradient-text {
-  @apply text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400;
+@media (min-width: 1024px) {
+  .section {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
 }

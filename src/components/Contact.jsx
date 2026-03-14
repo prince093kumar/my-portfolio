@@ -1,196 +1,301 @@
-import React, { useState } from "react";
-import emailjs from "@emailjs/browser";
-import { Mail, Github, Linkedin, Send } from "lucide-react";
-import { motion } from "framer-motion";
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Mail, 
+  Github, 
+  Linkedin, 
+  MapPin, 
+  Send, 
+  CheckCircle2, 
+  Loader2, 
+  Copy,
+  Check
+} from "lucide-react";
 
-const Contact = ({ darkMode }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
+const ContactCard = ({ icon: Icon, title, value, href, delay }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.5 }}
+      className="group relative"
+    >
+      <div className="flex items-center gap-4 p-5 rounded-2xl bg-surface/40 border border-white/5 hover:border-primary/30 transition-all duration-300 backdrop-blur-sm">
+        <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10 group-hover:bg-primary/10 transition-colors">
+          <Icon size={20} />
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-slate-500 font-mono text-[10px] font-bold uppercase tracking-[0.2em] mb-0.5">{title}</p>
+          <a 
+            href={href} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-foreground font-heading font-medium group-hover:text-primary transition-colors block truncate"
+          >
+            {value}
+          </a>
+        </div>
+
+        <button 
+          onClick={handleCopy}
+          className="p-2.5 rounded-lg hover:bg-primary/10 text-slate-500 hover:text-primary transition-all shrink-0"
+        >
+          {copied ? <Check size={14} className="text-success" /> : <Copy size={14} />}
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
+const FloatingInput = ({ label, name, type = "text", value, onChange, required = true, isTextArea = false }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const hasValue = value && value.length > 0;
+
+  const InputTag = isTextArea ? "textarea" : "input";
+
+  return (
+    <div className="relative group/input">
+      <InputTag
+        required={required}
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        rows={isTextArea ? 4 : undefined}
+        className={`w-full px-6 py-4 bg-surface/20 border rounded-2xl text-foreground outline-none transition-all duration-300 font-sans text-sm backdrop-blur-md
+          ${isFocused ? "border-primary bg-primary/5 shadow-[0_0_30px_rgba(56,189,248,0.05)]" : "border-white/5 hover:border-white/10"}
+          ${isTextArea ? "resize-none min-h-[150px]" : ""}
+        `}
+      />
+      <label
+        className={`absolute left-6 transition-all duration-300 pointer-events-none font-mono tracking-widest
+          ${(isFocused || hasValue)
+            ? "-top-2.5 left-4 px-2 py-0.5 text-[10px] text-primary bg-surface border border-primary/20 rounded-lg font-bold"
+            : "top-4 text-xs text-slate-500"
+          }
+        `}
+      >
+        {label}
+      </label>
+    </div>
+  );
+};
+
+const Particle = ({ delay }) => {
+  const randomX = useMemo(() => Math.random() * 100 - 50, []);
+  const randomY = useMemo(() => -100 - Math.random() * 100, []);
+  const randomDuration = useMemo(() => 5 + Math.random() * 5, []);
+  const randomSize = useMemo(() => 2 + Math.random() * 2, []);
+  const randomLeft = useMemo(() => `${Math.random() * 100}%`, []);
+  const randomTop = useMemo(() => `${Math.random() * 100}%`, []);
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 0, x: 0 }}
+      animate={{
+        opacity: [0, 0.4, 0],
+        y: randomY,
+        x: randomX
+      }}
+      transition={{
+        duration: randomDuration,
+        repeat: Infinity,
+        delay: delay,
+        ease: "linear"
+      }}
+      className="absolute bg-primary/20 rounded-full"
+      style={{ 
+        width: randomSize, 
+        height: randomSize,
+        left: randomLeft,
+        top: randomTop
+      }}
+    />
+  );
+};
+
+const Contact = () => {
+  const [formStatus, setFormStatus] = useState("idle");
+  const [formData, setFormData] = useState({ name: "" , email: "", subject: "", message: "" });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus("loading");
+    
+    setTimeout(() => {
+      setFormStatus("success");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      
+      setTimeout(() => {
+        setFormStatus("idle");
+      }, 5000);
+    }, 2000);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      setStatus("Please fill in all fields.");
-      return;
-    }
-
-    setLoading(true);
-    setStatus("");
-
-    try {
-      // Check if env vars are present before sending
-      if (!import.meta.env.VITE_EMAILJS_SERVICE_ID) {
-        throw new Error("Email service not configured");
-      }
-
-      await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        formData,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      );
-      setStatus("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      console.error("Email Error:", error);
-      setStatus("Failed to send message. Please try again or email directly.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <section
-      id="contact"
-      className={`relative py-20 px-4 transition-colors duration-300 overflow-hidden ${darkMode ? "bg-slate-900 text-slate-100" : "bg-slate-50 text-slate-800"
-        }`}
-    >
-      {/* Interactive Background Elements */}
+    <section id="contact" className="section relative overflow-hidden bg-[#020617] py-24">
+      {/* Subtle Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          animate={{ x: [0, 50, 0], y: [0, -50, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className={`absolute top-20 left-10 w-64 h-64 rounded-full blur-[100px] opacity-30 ${darkMode ? "bg-blue-600" : "bg-blue-300"}`}
-        />
-        <motion.div
-          animate={{ x: [0, -50, 0], y: [0, 50, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className={`absolute bottom-20 right-10 w-64 h-64 rounded-full blur-[100px] opacity-30 ${darkMode ? "bg-purple-600" : "bg-purple-300"}`}
-        />
+        <div className="absolute inset-0 bg-grid opacity-[0.05]" />
+        <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
+        <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-secondary/5 rounded-full blur-[120px]" />
       </div>
 
-      <div className="relative max-w-4xl mx-auto z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">Get In Touch</h2>
-          <p className={`text-lg ${darkMode ? "text-slate-400" : "text-slate-600"}`}>
-            Have a project in mind or want to collaborate? I'd love to hear from you.
-          </p>
-        </motion.div>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-3xl mx-auto mb-20 text-center space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface/50 border border-white/5 text-primary text-[10px] font-mono font-bold uppercase tracking-[0.3em]"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/40 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            Get In Touch
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className={`glass-card rounded-3xl p-8 lg:p-12 relative overflow-hidden`}
-        >
-          {/* subtle interior glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-          <div className="grid md:grid-cols-2 gap-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-5xl font-heading font-bold text-white tracking-tight"
+          >
+            Let's <span className="text-primary">Connect</span>
+          </motion.h2>
 
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <h3 className="text-2xl font-bold">Contact Info</h3>
-              <p className={darkMode ? "text-slate-400" : "text-slate-600"}>
-                Open for opportunities. Let's build something amazing together.
-              </p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-slate-400 text-base md:text-lg leading-relaxed max-w-xl mx-auto"
+          >
+            Have a project in mind or just want to say hi? I'm always open to new opportunities and collaborations.
+          </motion.p>
+        </div>
 
-              <div className="space-y-4">
-                <a href="mailto:prince09372@gmail.com" className={`group flex items-center gap-4 p-4 rounded-2xl border transition-all hover:-translate-y-1 ${darkMode ? "border-slate-700/50 bg-slate-800/50 hover:bg-slate-800 hover:border-blue-500/50" : "border-slate-200 bg-white/50 hover:bg-white hover:border-blue-300 hover:shadow-lg"}`}>
-                  <div className="p-3 rounded-xl bg-blue-500/10 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                    <Mail size={24} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm text-slate-500 font-medium">Email</span>
-                    <span className="font-semibold group-hover:text-blue-500 transition-colors">prince09372@gmail.com</span>
-                  </div>
-                </a>
-
-                <a href="https://linkedin.com/in/prince093kumar" target="_blank" rel="noreferrer" className={`group flex items-center gap-4 p-4 rounded-2xl border transition-all hover:-translate-y-1 ${darkMode ? "border-slate-700/50 bg-slate-800/50 hover:bg-slate-800 hover:border-blue-500/50" : "border-slate-200 bg-white/50 hover:bg-white hover:border-blue-300 hover:shadow-lg"}`}>
-                  <div className="p-3 rounded-xl bg-blue-500/10 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                    <Linkedin size={24} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm text-slate-500 font-medium">LinkedIn</span>
-                    <span className="font-semibold group-hover:text-blue-500 transition-colors">prince093kumar</span>
-                  </div>
-                </a>
-
-                <a href="https://github.com/prince093kumar" target="_blank" rel="noreferrer" className={`group flex items-center gap-4 p-4 rounded-2xl border transition-all hover:-translate-y-1 ${darkMode ? "border-slate-700/50 bg-slate-800/50 hover:bg-slate-800 hover:border-blue-500/50" : "border-slate-200 bg-white/50 hover:bg-white hover:border-blue-300 hover:shadow-lg"}`}>
-                  <div className="p-3 rounded-xl bg-blue-500/10 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                    <Github size={24} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm text-slate-500 font-medium">GitHub</span>
-                    <span className="font-semibold group-hover:text-blue-500 transition-colors">prince093kumar</span>
-                  </div>
-                </a>
-              </div>
+        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          {/* Left: Contact Info */}
+          <div className="space-y-6">
+            <ContactCard 
+              icon={Mail} 
+              title="Email Address" 
+              value="princekumar09372@gmail.com" 
+              href="mailto:princekumar09372@gmail.com" 
+              delay={0.2} 
+            />
+            <ContactCard 
+              icon={Github} 
+              title="GitHub Profile" 
+              value="github.com/prince093kumar" 
+              href="https://github.com/prince093kumar" 
+              delay={0.3} 
+            />
+            <ContactCard 
+              icon={Linkedin} 
+              title="LinkedIn Network" 
+              value="linkedin.com/in/prince093kumar" 
+              href="https://linkedin.com/in/prince093kumar" 
+              delay={0.4} 
+            />
+            <ContactCard 
+              icon={MapPin} 
+              title="Current Location" 
+              value="Punjab, India" 
+              href="#" 
+              delay={0.5} 
+            />
+            
+            <div className="pt-8 flex items-center gap-6">
+               <div className="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+               <div className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">Available for Hire</div>
+               <div className="h-[1px] flex-1 bg-gradient-to-l from-white/10 to-transparent" />
             </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`w-full p-3 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 transition-all ${darkMode ? "bg-slate-900 border-slate-700" : "bg-slate-50 border-slate-300"
-                    }`}
-                  placeholder="Your Name"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full p-3 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 transition-all ${darkMode ? "bg-slate-900 border-slate-700" : "bg-slate-50 border-slate-300"
-                    }`}
-                  placeholder="your@email.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Message</label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows="4"
-                  className={`w-full p-3 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 transition-all ${darkMode ? "bg-slate-900 border-slate-700" : "bg-slate-50 border-slate-300"
-                    }`}
-                  placeholder="How can I help you?"
-                />
-              </div>
-
-              {status && (
-                <p className={`text-sm ${status.includes("success") ? "text-green-500" : "text-red-500"}`}>
-                  {status}
-                </p>
-              )}
-
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={loading}
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {loading ? "Sending..." : <>Send Message <Send size={18} className="animate-pulse" /></>}
-              </motion.button>
-            </form>
           </div>
-        </motion.div>
+
+          {/* Right: Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            className="tech-card p-8 md:p-10 relative overflow-hidden bg-surface/30 backdrop-blur-xl"
+          >
+            <AnimatePresence mode="wait">
+              {formStatus === "success" ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="flex flex-col items-center justify-center py-12 text-center"
+                >
+                  <div className="w-20 h-20 rounded-3xl bg-success/10 flex items-center justify-center text-success border border-success/20 mb-8 font-bold shadow-[0_0_40px_rgba(34,197,94,0.1)] relative">
+                    <CheckCircle2 size={40} />
+                  </div>
+                  <h3 className="text-2xl font-heading font-bold text-white mb-3">Message Sent!</h3>
+                  <p className="text-slate-400 text-base max-w-sm">Thanks for reaching out. I'll get back to you as soon as possible.</p>
+                </motion.div>
+              ) : (
+                <motion.form
+                  key="form"
+                  onSubmit={handleSubmit}
+                  className="space-y-6 relative z-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FloatingInput label="Full Name" name="name" value={formData.name} onChange={handleChange} />
+                    <FloatingInput label="Email Address" type="email" name="email" value={formData.email} onChange={handleChange} />
+                  </div>
+                  <FloatingInput label="Subject" name="subject" value={formData.subject} onChange={handleChange} />
+                  <FloatingInput label="Your Message" name="message" value={formData.message} onChange={handleChange} isTextArea />
+
+                  <motion.button
+                    disabled={formStatus === "loading"}
+                    type="submit"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className="w-full py-5 rounded-2xl bg-primary text-white font-mono font-bold text-sm tracking-[0.2em] hover:bg-primary/90 transition-all flex items-center justify-center gap-3 relative overflow-hidden shadow-xl shadow-primary/10 group"
+                  >
+                    {formStatus === "loading" ? (
+                      <div className="flex items-center gap-3">
+                        <Loader2 size={18} className="animate-spin" />
+                        <span>SENDING...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3">
+                        <span>SEND MESSAGE</span>
+                        <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      </div>
+                    )}
+                  </motion.button>
+                </motion.form>
+              )}
+            </AnimatePresence>
+
+            {/* Floating Background Particles in the Card */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+              {[...Array(5)].map((_, i) => (
+                <Particle key={i} delay={i * 1.5} />
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

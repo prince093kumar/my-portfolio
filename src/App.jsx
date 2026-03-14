@@ -8,15 +8,17 @@ import Certifications from './components/Certifications';
 import Achievements from './components/Achievements';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import BackgroundSystem from './components/common/BackgroundSystem';
+import SectionDivider from './components/common/SectionDivider';
+import SkillsArchitecture from './components/SkillsArchitecture';
+import Workflow from './components/Workflow';
 
 const App = () => {
-  // Enforce Dark Mode permanently
   const darkMode = true;
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
-    const sectionIds = ['home', 'about', 'projects', 'resume', 'contact'];
-
+    const sectionIds = ['home', 'about', 'skills', 'workflow', 'projects', 'resume', 'contact', 'certifications', 'achievements'];
     const observerCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -24,21 +26,17 @@ const App = () => {
         }
       });
     };
-
     const observerOptions = {
       root: null,
       rootMargin: '-50% 0px -50% 0px',
     };
-
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-
     sectionIds.forEach((id) => {
       const element = document.getElementById(id);
       if (element) {
         observer.observe(element);
       }
     });
-
     return () => {
       observer.disconnect();
     };
@@ -53,20 +51,31 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen font-sans transition-colors duration-300 dark bg-slate-900 text-slate-100">
+    <div className="min-h-screen transition-colors duration-500 dark">
+      <BackgroundSystem />
       <Navbar
         darkMode={darkMode}
         scrollTo={scrollTo}
         activeSection={activeSection}
       />
 
-      <main>
+      <main className="relative z-0">
         <Hero darkMode={darkMode} scrollTo={scrollTo} />
+        <SectionDivider />
         <About darkMode={darkMode} />
+        <SectionDivider />
+        <SkillsArchitecture />
+        <SectionDivider />
+        <Workflow />
+        <SectionDivider />
         <Projects darkMode={darkMode} />
+        <SectionDivider />
         <Resume darkMode={darkMode} />
+        <SectionDivider />
         <Certifications darkMode={darkMode} />
+        <SectionDivider />
         <Achievements darkMode={darkMode} />
+        <SectionDivider />
         <Contact darkMode={darkMode} />
       </main>
 
